@@ -7,8 +7,7 @@ from .region import Region
 class Hospital(models.Model):
     name = models.CharField(max_length=50, unique=True)
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
-    # metrics = models.ForeignKey()
     inventory = models.OneToOneField(Inventory, on_delete=models.CASCADE, related_name="inventory_of")
     marketShare = models.FloatField()
     currentHospitalized = models.IntegerField()
-    # capacity
+    capacity = models.IntegerField()
