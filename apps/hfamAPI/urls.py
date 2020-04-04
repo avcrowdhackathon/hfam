@@ -25,6 +25,7 @@ from .views.predictionInputs import PredictionInputsList, PredictionInputsDetail
 from .views.predictionOutputs import PredictionOutputsList, PredictionOutputsDetail
 from .views.region import RegionList, RegionDetail
 from .views.timetable import TimeTableList, TimeTableDetail
+from .views.predictionOutputViaInput import get_prediction_output_via_input
 
 urlpatterns = [
     path("agedistributions/", AgeDistributionList.as_view(), name="ageDistribution"),
@@ -47,4 +48,5 @@ urlpatterns = [
     path("predictioninputs/<int:pk>/", PredictionInputsDetail.as_view(), name="predictioninputs"),
     path("predictionoutputs/", PredictionOutputsList.as_view(), name="predictionoutputs"),
     path("predictionoutputs/<int:pk>/", PredictionOutputsDetail.as_view(), name="predictionoutputs"),
+    path("predictionoutputs/input/<int:p_inputs_k>", get_prediction_output_via_input, name="getPredictionOutputsViaInput")
 ]
