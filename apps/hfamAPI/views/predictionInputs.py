@@ -37,11 +37,12 @@ class PredictionInputsList(APIView):
             outputs = SimSirModel(parameters)
             prediction_output_view = PredictionOutputsList()
             # After simulation is complete we want to save the simulation outputs to the DB
-            prediction_output_view.post({
+            data = {
                 "dateTime": datetime.datetime.now(), "predictionInputs": request_data.get("id", 1),
                 "admittedPatients": outputs.admits_df.to_json(), "census": outputs.census_df.to_json(),
                 "sir": outputs.sim_sir_w_date_df.to_json()
-            })
+            }
+            prediction_output_view.post(data)
             return Response(serializer_inputs.data, status=status.HTTP_201_CREATED)
         return Response(serializer_inputs.errors, status=status.HTTP_400_BAD_REQUEST)
 
