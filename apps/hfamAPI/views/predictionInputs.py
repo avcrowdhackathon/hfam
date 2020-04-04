@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.http.request import HttpRequest
+
 from apps.hfamAPI.models.predictionInputs import PredictionInputs
 from apps.hfamAPI.serializers.predictionInputs import PredictionInputsSerializer
 from apps.hfamAPI.views.predictionOutputs import PredictionOutputsList
@@ -30,19 +32,17 @@ class PredictionInputsList(APIView):
         serializer_inputs = PredictionInputsSerializer(data=request_data)
         # Maps the POST data fields to the fields used in the simulation for easier flattening
         if serializer_inputs.is_valid():
-            # Here we save the prediction inputs to the DB
             serializer_inputs.save()
-            # After saving we want to construct the parameters and initiate the simulation
-            parameters = construct_parameters(request_data)
-            outputs = SimSirModel(parameters)
+            # Get the id of the object create
+            just_created_inputs_obj_id = PredictionInputs.objects.order_by('id')[0].id
+            # Create the simulation output
+            output_data = create_simulation(just_created_inputs_obj_id, request_data)
+
+            # Construct a HttpRequest object to call post
+            request2 = HttpRequest()
+            request2.data = output_data
             prediction_output_view = PredictionOutputsList()
-            # After simulation is complete we want to save the simulation outputs to the DB
-            data = {
-                "dateTime": datetime.datetime.now(), "predictionInputs": request_data.get("id", 1),
-                "admittedPatients": outputs.admits_df.to_json(), "census": outputs.census_df.to_json(),
-                "sir": outputs.sim_sir_w_date_df.to_json()
-            }
-            prediction_output_view.post(data)
+            prediction_output_view.post(request2)
             return Response(serializer_inputs.data, status=status.HTTP_201_CREATED)
         return Response(serializer_inputs.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -76,3 +76,14 @@ class PredictionInputsDetail(APIView):
         prediction_input = self.get_object(pk)
         prediction_input.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def create_simulation(last_id, request_data):
+    parameters = construct_parameters(request_data)
+    outputs = SimSirModel(parameters)
+    data = {
+        "predictionInputs": last_id,
+        "admittedPatients": outputs.admits_df.to_json(), "census": outputs.census_df.to_json(),
+        "sir": outputs.sim_sir_w_date_df.to_json()
+    }
+    return data

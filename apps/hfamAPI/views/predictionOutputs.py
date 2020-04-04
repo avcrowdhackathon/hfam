@@ -19,9 +19,9 @@ class PredictionOutputsList(APIView):
         serializer = PredictionOutputsSerializer(prediction_inputs, many=True)
         return Response(serializer.data)
 
-    @swagger_auto_schema(operation_description="Creates an Age Distribution", request_body=PredictionOutputsSerializer)
-    def post(self, data):
-        serializer_inputs = PredictionOutputsSerializer(data=data)
+    @swagger_auto_schema(operation_description="Creates an Prediction Output", request_body=PredictionOutputsSerializer)
+    def post(self, request):
+        serializer_inputs = PredictionOutputsSerializer(data=request.data)
         # Maps the POST data fields to the fields used in the simulation for easier flattening
         if serializer_inputs.is_valid():
             serializer_inputs.save()

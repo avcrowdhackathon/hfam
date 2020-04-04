@@ -35,7 +35,7 @@ urlpatterns = [
     path('api/', include('apps.hfamAPI.urls')),
     path(r'docs/', include_docs_urls(title='hfam API', description="The hfam API created for the "
                                                                    "Crowdhackathon Antivirus with <3", public=False)),
-    re_path('swagger(?P<format>\.json|\.yaml)', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    re_path('^swagger(?P<format>.json|.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
