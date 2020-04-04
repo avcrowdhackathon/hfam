@@ -34,7 +34,7 @@ class PredictionInputsList(APIView):
         if serializer_inputs.is_valid():
             serializer_inputs.save()
             # Get the id of the object create
-            just_created_inputs_obj_id = PredictionInputs.objects.order_by('id')[0].id
+            just_created_inputs_obj_id = PredictionInputs.objects.order_by('id').reverse()[0].id
             # Create the simulation output
             output_data = create_simulation(just_created_inputs_obj_id, request_data)
 
