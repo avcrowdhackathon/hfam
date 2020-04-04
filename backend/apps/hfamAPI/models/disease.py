@@ -4,7 +4,6 @@ from django.db import models
 class Disease(models.Model):
     name = models.CharField(max_length=50, unique=True)
     socialDistancing = models.FloatField()
-    annualAverage = models.FloatField()
     infectiousDays = models.IntegerField()
     dateOfFirstHospitalizedCase = models.DateField()
     hospitalization = models.FloatField()

@@ -9,7 +9,6 @@ class DiseaseSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "socialDistancing",
-            "annualAverage",
             "infectiousDays",
             "dateOfFirstHospitalizedCase",
             "hospitalization",

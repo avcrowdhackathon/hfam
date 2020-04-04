@@ -11,3 +11,7 @@ class Hospital(models.Model):
     marketShare = models.FloatField()
     currentHospitalized = models.IntegerField()
     capacity = models.IntegerField()
+    latLong = models.CharField(max_length=50, default="")
+    confirmed = models.IntegerField(default=0)
+    cured = models.IntegerField(default=0)
+    admitted = models.IntegerField(default=0)

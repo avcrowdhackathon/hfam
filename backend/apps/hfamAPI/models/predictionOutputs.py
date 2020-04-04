@@ -11,3 +11,4 @@ class PredictionOutputs(models.Model):
     admittedPatients = JSONField()
     census = JSONField()
     sir = JSONField()
+    test = models.IntegerField(null=True)

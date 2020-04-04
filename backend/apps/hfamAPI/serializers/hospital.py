@@ -6,4 +6,4 @@ from apps.hfamAPI.models.hospital import Hospital
 class HospitalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hospital
-        fields = ["id", "name", "region", "inventory", "marketShare", "currentHospitalized", "capacity"]
+        fields = "__all__"
